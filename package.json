@@ -1,0 +1,32 @@
+{
+  "name": "platable-backend-assmt",
+  "version": "1.0.0",
+  "description": "Platable Backend Developer Test",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshvsinghme/platable-backend-assmt.git"
+  },
+  "author": "harshvsinghme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harshvsinghme/platable-backend-assmt/issues"
+  },
+  "homepage": "https://github.com/harshvsinghme/platable-backend-assmt#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}

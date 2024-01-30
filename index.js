@@ -7,7 +7,7 @@ const cors = require("cors");
 const logger = require("morgan");
 const { connectDB } = require("./src/config/database");
 
-const dotenvPath = path.join(__dirname, ".env");
+const dotenvPath = path.join(__dirname, "src", "config", ".env");
 
 // Check if .env file exists
 if (!require("fs").existsSync(dotenvPath)) {

@@ -8,6 +8,8 @@ const foodItemSchema = new mongoose.Schema(
     expiryDate: { type: Date, required: true }, // Expiry Date
     quantity: { type: Number, required: true }, // Quantity
     donatedBy: { type: mongoose.Types.ObjectId, required: true, ref: "User" }, // Donor(Whoever added this food item)
+    // on deletion, we won't actually delete it. We will only turn this flag to true. aka Soft Deletion
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

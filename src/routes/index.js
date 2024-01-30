@@ -5,7 +5,10 @@ const foodItemRoutes = require("./foodItemRoutes");
 
 const router = Router();
 
+// Routes
+// For Authentication related APIs
 router.use("/auth", authRoutes);
-router.use("/food-item", foodItemRoutes);
+// For FoodItem related APIs
+router.use("/food-items", foodItemRoutes);
 
 module.exports = router;

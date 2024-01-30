@@ -58,4 +58,30 @@ const addFoodItem = async (req, res) => {
   }
 };
 
-module.exports = { addFoodItem };
+const getFoodItems = async (req, res) => {
+  try {
+    //Extract values from request query
+    const { donatedBy } = req.query;
+
+    //capture the result of getting the food items
+    const result = await foodItemService.getFoodItems(donatedBy);
+
+    // if any error occurs
+    if (!result.success) throw newError(500, result.message);
+
+    // processing food items successful
+    res.status(200).json(result);
+  } catch (error) {
+    // fallback aka error handling
+    let defaultError = {};
+
+    defaultError.code = error.code ?? 500;
+    defaultError.message = error.message ?? "something went wrong";
+
+    res
+      .status(defaultError.code)
+      .json({ success: false, message: defaultError.message });
+  }
+};
+
+module.exports = { addFoodItem, getFoodItems };

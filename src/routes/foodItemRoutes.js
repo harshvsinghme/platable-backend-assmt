@@ -16,6 +16,10 @@ router.get("/:foodItemId", foodItemController.getIndividualFoodItem);
 // Update Specific Food Item based on Food Item Id
 router.put("/:foodItemId", isAuthenticated, foodItemController.updateFoodItem);
 // Delete Specific Food Item based on Food Item Id
-// router.delete("/:foodItemId", isAuthenticated, foodItemController.addFoodItem);
+router.delete(
+  "/:foodItemId",
+  isAuthenticated,
+  foodItemController.deleteIndividualFoodItem
+);
 
 module.exports = router;

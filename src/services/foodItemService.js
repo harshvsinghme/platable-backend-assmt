@@ -80,7 +80,7 @@ const updateFoodItem = async (
   if (foodItemRecord) {
     if (foodItemRecord.donatedBy.toString() !== currentUserId.toString()) {
       response.message =
-        "you are not authorized to updated this food item: only donor of this item can update this";
+        "you are not authorized to update this food item: only donor of this item can update this";
       return response;
     }
     // user can only edit following properties. for example, a user can't change donor id of food item.
@@ -104,9 +104,41 @@ const updateFoodItem = async (
   return response;
 };
 
+const deleteIndividualFoodItem = async (currentUserId, foodItemId) => {
+  let response = { success: false, message: "" };
+
+  // process specific food item by id
+  const foodItemRecord = await FoodItem.findById(foodItemId);
+
+  // if food item record exists as well as currently logged in user must be the donor of the item
+  // as he/she can only delete his/her food item. none else is allowed to delete someone else's food item
+  if (foodItemRecord) {
+    if (foodItemRecord.donatedBy.toString() !== currentUserId.toString()) {
+      response.message =
+        "you are not authorized to delete this food item: only donor of this item can delete this";
+      return response;
+    }
+
+    // mark as deleted(soft delete for data persistence)
+    foodItemRecord.isDeleted = true;
+
+    // save updated document
+    await foodItemRecord.save();
+
+    // if above operation successful then, set success response
+    response.success = true;
+    response.message = "food item deleted successfully";
+  } else {
+    response.message = "no such food item exists";
+  }
+
+  return response;
+};
+
 module.exports = {
   addFoodItem,
   getFoodItems,
   getIndividualFoodItem,
   updateFoodItem,
+  deleteIndividualFoodItem,
 };

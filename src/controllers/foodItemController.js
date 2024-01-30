@@ -212,9 +212,44 @@ const updateFoodItem = async (req, res) => {
   }
 };
 
+const deleteIndividualFoodItem = async (req, res) => {
+  try {
+    //Extract foodItemId from request params
+    const { foodItemId } = req.params;
+
+    // validate the value of foodItemId
+    if (!isValidObjectId(foodItemId)) {
+      throw newError(400, "food item id (foodItemId) is invalid");
+    }
+
+    // capture the result of deleting the food item
+    const result = await foodItemService.deleteIndividualFoodItem(
+      req.user._id,
+      foodItemId
+    );
+
+    // if looks like a fail
+    if (!result.success) throw newError(500, result.message);
+
+    // deleted that specific food item successfully
+    res.status(200).json(result);
+  } catch (error) {
+    // fallback aka error handling
+    let defaultError = {};
+
+    defaultError.code = error.code ?? 500;
+    defaultError.message = error.message ?? "something went wrong";
+
+    res
+      .status(defaultError.code)
+      .json({ success: false, message: defaultError.message });
+  }
+};
+
 module.exports = {
   addFoodItem,
   getFoodItems,
   getIndividualFoodItem,
   updateFoodItem,
+  deleteIndividualFoodItem,
 };

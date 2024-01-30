@@ -12,7 +12,7 @@ router.post("/", isAuthenticated, foodItemController.addFoodItem);
 // Get {1, N} Food Item(s) based on filters
 router.get("/", foodItemController.getFoodItems);
 //Get Specific Food Item based on Food Item Id
-// router.get("/:foodItemId", foodItemController.getIndividualFoodItem);
+router.get("/:foodItemId", foodItemController.getIndividualFoodItem);
 // Update Specific Food Item based on Food Item Id
 // router.put("/:foodItemId", isAuthenticated, foodItemController.updateFoodItem);
 // Delete Specific Food Item based on Food Item Id

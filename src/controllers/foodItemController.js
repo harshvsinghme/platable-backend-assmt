@@ -1,5 +1,6 @@
 const foodItemService = require("../services/foodItemService");
 const { newError } = require("../utils/utils");
+const { isValidObjectId } = require("mongoose");
 
 const addFoodItem = async (req, res) => {
   try {
@@ -61,7 +62,17 @@ const addFoodItem = async (req, res) => {
 const getFoodItems = async (req, res) => {
   try {
     //Extract values from request query
-    const { donatedBy } = req.query;
+    let { donatedBy } = req.query;
+
+    // check if donatedBy filter is there
+    if (donatedBy) {
+      // validate the value of donatedBy
+      if (!isValidObjectId(donatedBy)) {
+        throw newError(400, "donor id (donatedBy) is invalid");
+      }
+    } else {
+      donatedBy = null;
+    }
 
     //capture the result of getting the food items
     const result = await foodItemService.getFoodItems(donatedBy);
@@ -84,4 +95,35 @@ const getFoodItems = async (req, res) => {
   }
 };
 
-module.exports = { addFoodItem, getFoodItems };
+const getIndividualFoodItem = async (req, res) => {
+  try {
+    //Extract foodItemId from request params
+    const { foodItemId } = req.params;
+
+    // validate the value of foodItemId
+    if (!isValidObjectId(foodItemId)) {
+      throw newError(400, "food item id (foodItemId) is invalid");
+    }
+
+    //capture the result of getting the food items
+    const result = await foodItemService.getIndividualFoodItem(foodItemId);
+
+    // if looks like a fail
+    if (!result.success) throw newError(500, result.message);
+
+    // process that specific food item
+    res.status(200).json(result);
+  } catch (error) {
+    // fallback aka error handling
+    let defaultError = {};
+
+    defaultError.code = error.code ?? 500;
+    defaultError.message = error.message ?? "something went wrong";
+
+    res
+      .status(defaultError.code)
+      .json({ success: false, message: defaultError.message });
+  }
+};
+
+module.exports = { addFoodItem, getFoodItems, getIndividualFoodItem };

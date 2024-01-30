@@ -38,9 +38,6 @@ const numCPUs = os.cpus().length;
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 
-  // Connect to Mongodb
-  connectDB();
-
   // Fork workers
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
@@ -53,6 +50,9 @@ if (cluster.isMaster) {
   // Worker process
 
   const app = express();
+
+  // Connect to Mongodb
+  connectDB();
 
   // Middleware
   app.use(cors());
